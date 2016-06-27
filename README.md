@@ -1,15 +1,15 @@
 # Toy C++ Crypto
 
 ## RSA
-* Creates Public / Private Key Pair
-* Encrypts Message
+* Generate Cryptographically Secure Random
+* Primality Test (Miller - Rabin / Fermat)
+* Euler's Totient Function and Euler's Theorem
 
 ### TODO:
-[] Generate Cryptographically Secure Random
-[] Variable Key Sizes
-[] Miller - Rabin (Test Prime)
-[] Encrypt / Decrypt Variable Length Message Digest
+* Encrypt / Decrypt Variable Length Message Digest
 
 ## Future
 * AES
+* DES
+* Blowfish
 * Elliptic Curve
