@@ -43,6 +43,21 @@ void RSA::createKeyPair() {
 
 	//http://crypto.stackexchange.com/questions/71/how-can-i-generate-large-prime-numbers-for-rsa
 
+	//unsigned int p1 = rand() % 30 + 343443434343;
+	//std::cout << "Rand P: " << p1 << "\n";
+
+	//int p1 = 7919;
+	bool prime = false;
+	unsigned int p1 = 0;
+	
+	while (prime == false) {
+		p1 = rand() % 3000000000000000000 + 100000000000;
+		std::cout << "Testing: " << p1 << "\n";
+		if (fermat(p1, 100) == true) {
+			std::cout << "WE HAVE A PRIME: " << p1 << "\n";
+			prime = true;
+		}
+	}
 
 	
 	
@@ -121,4 +136,36 @@ void RSA::decrypt(int c, int d, int n) {
 	int m1 = pow(c, d);
 	int m2 = m1 % n;
 	std::cout << "M: " << m2 << "\n";
+}
+
+bool RSA::millerRabin(int n) {
+	return false;
+}
+
+bool RSA::fermat(int n, int k) {
+
+	// a ^ n-1 = 1 (mod n)
+
+	for (int i = 0; i < k; ++i) {
+		int a = rand() % n + 1;
+		if (modulo(a, n - 1, n) != 1) {
+			return false;
+		}
+	}
+
+	return true;
+}
+
+int RSA::modulo(int base, int exponent, int mod) {
+	//return (pow(base, exponent) / mod);
+
+	long long x = 1, y = base;
+		while (exponent > 0) {
+			if (exponent % 2 == 1) {
+				x = (x * y) % mod;
+			}
+			y = (y * y) % mod;
+			exponent /= 2;
+		}
+	return x % mod;
 }

@@ -14,6 +14,12 @@ public:
 
 	void decrypt(int c, int d, int n);
 
+	bool millerRabin(int n);
+
+	bool fermat(int n, int k);
+
+	int modulo(int b, int e, int m);
+
 private:
 	struct keypair {
 		int e; // (e, n)
