@@ -5,17 +5,18 @@
 #include <vector>
 #include <algorithm>
 #include <math.h>
+#include <ctime>
 
 /*
 Primer:
 
-Choose p = 3 and q = 11
+Compute 2 primes
 Compute n = p * q
-Compute q(n) = (p - 1) * (q - 1) = 2 * 10 = 20
-Choose e such that 1 < e < q(n) and e and n are coprime. Let e = 7
-Compute a value for d such that (d * e) % q(n) = 1. One solution is d = 3 [(3 * 7) % 20 = 1]
-Public key is (e, n) => (7, 33)
-Private key is (d, n) => (3, 33)
+Compute q(n) = (p - 1) * (q - 1)
+Choose e such that 1 < e < q(n) and e and n are coprime.
+Compute a value for d such that (d * e) % q(n) = 1
+Public key is (e, n)
+Private key is (d, n)
 The encryption of m = 2 is c = 27 % 33 = 29
 The decryption of c = 29 is m = 293 % 33 = 2
 
@@ -42,65 +43,40 @@ void RSA::createKeyPair() {
 	//Fermat primality test
 
 	//http://crypto.stackexchange.com/questions/71/how-can-i-generate-large-prime-numbers-for-rsa
+	//http://www.di-mgt.com.au/rsa_alg.html
 
-	//unsigned int p1 = rand() % 30 + 343443434343;
-	//std::cout << "Rand P: " << p1 << "\n";
+	long prime = 0;
+	srand(time(0));
+	prime = rand() % 100 + 100;
+	std::cout << "PRIME: " << prime << "\n";
 
-	//int p1 = 7919;
-	bool prime = false;
-	unsigned int p1 = 0;
-	
-	while (prime == false) {
-		p1 = rand() % 3000000000000000000 + 100000000000;
-		std::cout << "Testing: " << p1 << "\n";
-		if (fermat(p1, 100) == true) {
-			std::cout << "WE HAVE A PRIME: " << p1 << "\n";
-			prime = true;
-		}
-	}
 
-	
-	
-	int p = 3;
-	int q = 11;
+
+	int p = genPrime();
+	int q = genPrime();
+
+	std::cout << "P: " << p << "\n";
+	std::cout << "Q: " << q << "\n";
+
+
 	int n = p * q;
-	//q(n) = (p - 1) * (q - 1) = 2 * 10 = 20
+
+	std::cout << "N: " << n << "\n";
+
+
 	int qn = (p - 1) * (q - 1);
+
+	std::cout << "QN: " << qn << "\n";
+
+
+
+
 	//Choose e such that 1 < e < q(n) and e and n are coprime.Let e = 7
-	std::vector<int> nf;
-	std::vector<int> ef;
-	std::vector<int> efs;
-
-	for (int i = 1; i <= n; ++i) {
-		if (n%i == 0) {
-			nf.push_back(i);
-		}
+	int e = 997;
+	if (RSA::gcd(e, qn) == true) {
+		std::cout << "PHI: " << e << "\n";
 	}
 
-	for (int i = 1; i <= qn; ++i) {
-		for (int j = 1; j <= i; ++j) {
-			if (i%j == 0) {
-				ef.push_back(j);
-			}
-		}
-		int co = 0;
-		for (auto ef1 : ef) {
-			if (std::find(nf.begin(), nf.end(), ef1) != nf.end()) {
-				/* v contains x */
-				++co;
-			}
-		}
-		if (co == 1) {
-			std::cout << "COPRIME: " << i << "\n";
-		}
-		ef.clear();
-	}
-
-	for (auto entry : nf) {
-		std::cout << entry << "\n";
-	}
-
-	int e = 7;
 
 	int d = 0;
 	int temp = 0;
@@ -113,14 +89,16 @@ void RSA::createKeyPair() {
 
 	std::cout << "D: " << d << "\n";
 
+
+
 	std::cout << "Public Key = (" << e << ", " << n << ")" << "\n";
 
 	std::cout << "Private Key = (" << d << ", " << n << ")" << "\n";
 
-	keypair kp = { e, d, n };
 
-	int c = encrypt(2, e, n);
-	decrypt(c, d, n);
+	//keypair kp = { e, d, n };
+	//int c = encrypt(2, e, n);
+	//decrypt(c, d, n);
 
 }
 
@@ -138,14 +116,18 @@ void RSA::decrypt(int c, int d, int n) {
 	std::cout << "M: " << m2 << "\n";
 }
 
-bool RSA::millerRabin(int n) {
-	return false;
+int RSA::genPrime() {
+	while (true) {
+		unsigned int p = rand() % 300000000000000000 + 10;
+		if (RSA::fermat(p, 100) == true) {
+			return p;
+		}
+	}
 }
 
 bool RSA::fermat(int n, int k) {
 
 	// a ^ n-1 = 1 (mod n)
-
 	for (int i = 0; i < k; ++i) {
 		int a = rand() % n + 1;
 		if (modulo(a, n - 1, n) != 1) {
@@ -157,8 +139,7 @@ bool RSA::fermat(int n, int k) {
 }
 
 int RSA::modulo(int base, int exponent, int mod) {
-	//return (pow(base, exponent) / mod);
-
+	// (base ^ exponent) / mod
 	long long x = 1, y = base;
 		while (exponent > 0) {
 			if (exponent % 2 == 1) {
@@ -169,3 +150,20 @@ int RSA::modulo(int base, int exponent, int mod) {
 		}
 	return x % mod;
 }
+
+bool RSA::gcd(int n1, int n2) {
+	int n3 = n1;
+	int n4 = n2;
+	while (n3 != n4) {
+		if (n3 > n4)
+			n3 -= n4;
+		else
+			n4 -= n3;
+	}
+	if (n3 == 1) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
