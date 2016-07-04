@@ -11,6 +11,9 @@ Refer to the documentation for relative primers.
 * Computes Keypair
 * Encrypts & Decrypts Message
 
+Dependancies:
+* https://github.com/panks/BigInteger - Bundled
+
 ## TODO
 * ECC
 * AES
