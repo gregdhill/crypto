@@ -1,15 +1,16 @@
 # Toy C++ Crypto
 
-## RSA
-* Generate Cryptographically Secure Random
-* Primality Test (Miller - Rabin / Fermat)
-* Euler's Totient Function and Euler's Theorem
+This repository contains all personal cryptographic implementations. For educational use only, the code is not cryptographically secure, nor has it been optimised efficiently.
 
-### TODO:
-* Encrypt / Decrypt Variable Length Message Digest
+To run, download the repository and open the solution in MSVC.
 
-## Future
+Refer to the documentation for relative primers.
+
+## Asymmetric
+### RSA
+* Computes Keypair
+* Encrypts & Decrypts Message
+
+## TODO
+* ECC
 * AES
-* DES
-* Blowfish
-* Elliptic Curve
