@@ -1,4 +1,0 @@
-﻿  RSA.cpp
-c:\users\grego\documents\github\crypto\crypto\rsa.cpp(114): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-c:\users\grego\documents\github\crypto\crypto\rsa.cpp(121): warning C4244: 'initializing': conversion from 'double' to 'int', possible loss of data
-  Crypto.vcxproj -> C:\Users\grego\Documents\GitHub\crypto\Crypto\Debug\Crypto.exe

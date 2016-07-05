@@ -1,3 +1,5 @@
+#include "bigint.h"
+
 class RSA {
 public:
 
@@ -7,29 +9,27 @@ public:
 	*/
 	void createKeyPair();
 
-	//TODO: Standard key sizes
-	//TODO: Random big prime.
-
 	int encrypt(int m, int e, int n);
 
 	void decrypt(int c, int d, int n);
 
-	int genPrime();
+	BigInteger genPrime(int keySize);
 
-	bool fermat(int n, int k);
+	bool fermat(BigInteger n, int k);
 
 	/*
 	*	Modular Exponentiation
 	*/
-	int modulo(int b, int e, int m);
+	BigInteger modulo(int b, BigInteger e, BigInteger m);
 
-	bool gcd(int n1, int n2);
+	bool gcd(BigInteger n1, BigInteger n2);
 
 private:
 	struct keypair {
-		int e; // (e, n)
-		int d; // (d, n)
-		int n;
+		BigInteger e; // (e, n)
+		BigInteger d; // (d, n)
+		BigInteger n;
 	};
-	
+	int tries;
+
 };
