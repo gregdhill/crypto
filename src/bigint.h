@@ -56,6 +56,7 @@ private:
 	pair<string, long long> divide(string n, long long den);
 	string toString(long long n);
 	long long toInt(string s);
+	int hextoint(char number);
 };
 
 #endif

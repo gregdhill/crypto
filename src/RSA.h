@@ -13,7 +13,7 @@ public:
 
 	void decrypt(int c, int d, int n);
 
-	BigInteger genPrime(int keySize);
+	BigInteger genPrime();
 
 	bool fermat(BigInteger n, int k);
 
@@ -30,6 +30,4 @@ private:
 		BigInteger d; // (d, n)
 		BigInteger n;
 	};
-	int tries;
-
 };

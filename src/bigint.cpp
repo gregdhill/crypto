@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <cmath>
+#include <unordered_map>
 #include "bigint.h"
 #define MAX 10000 // for strings
 
@@ -481,11 +482,7 @@ void BigInteger::toDecimal(string hex)
 	int power = hex.length() - 1;
 
 	for (int i = 0; i < hex.length(); ++i) {
-		char num = hex.at(i);
-		unsigned int myval;
-		std::stringstream ss;
-		ss << num;
-		ss >> std::hex >> myval;
+		unsigned int num = hextoint(hex.at(i));
 
 		BigInteger product = 1;
 		for (unsigned int i = 0; i < power; ++i)
@@ -493,12 +490,26 @@ void BigInteger::toDecimal(string hex)
 			product *= 16;
 		}
 
-		BigInteger myval1 = myval;
-		BigInteger smallHex = myval1 * product;
+		BigInteger myval = num;
+		BigInteger smallHex = myval * product;
 		bigHex = add(bigHex, smallHex);
 
 		power = power - 1;
 	}
 
 	setNumber(bigHex);
+}
+
+std::unordered_map<char, int> table{
+	{ '0', 0 },{ '1', 1 },{ '2', 2 },
+	{ '3', 3 },{ '4', 4 },{ '5', 5 },
+	{ '6', 6 },{ '7', 7 },{ '8', 8 },
+	{ '9', 9 },{ 'a', 10 },{ 'A', 10 },
+	{ 'b', 11 },{ 'B', 11 },{ 'c', 12 },
+	{ 'C', 12 },{ 'd', 13 },{ 'D', 13 },
+	{ 'e', 14 },{ 'E', 14 },{ 'f', 15 },
+	{ 'F', 15 },{ 'x', 0 },{ 'X', 0 } };
+
+int BigInteger::hextoint(char number) {
+	return table[(std::size_t)number];
 }
